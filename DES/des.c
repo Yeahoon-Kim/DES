@@ -1,9 +1,9 @@
 #include "des.h"
 
-//ÇĞ¹ø_ÀÌ¸§
-char SUBMISSION_INFO[256] = "2020330006_±è¿¹ÈÆ\0";
+//í•™ë²ˆ_ì´ë¦„
+char SUBMISSION_INFO[256] = "0000000000_000\0";
 
-// ÇÔ¼ö Á¤ÀÇ //typedef uint64_t DES_STATE_t;
+// í•¨ìˆ˜ ì •ì˜ //typedef uint64_t DES_STATE_t;
 
 typedef union keyHandler
 {
@@ -201,7 +201,7 @@ DES_STATE_t permutedChoice_2(DES_STATE_t K)
 		tempKey.block[i / 7] <<= 1;
 	}
 
-	return tempKey.wholeKey; // ¹è¿­ÀÇ ¼ø¼­, ¸Ş¸ğ¸® ¼ø¼­ ¾Æ´Ô
+	return tempKey.wholeKey; // ë°°ì—´ì˜ ìˆœì„œ, ë©”ëª¨ë¦¬ ìˆœì„œ ì•„ë‹˜
 }
 
 uint64_t bitExtension(uint32_t half)
@@ -226,7 +226,7 @@ uint64_t bitExtension(uint32_t half)
 		tempBit.block[i / 7] <<= 1;
 	}
 	
-	// ¹è¿­ÀÇ ¼ø¼­, ¸Ş¸ğ¸®ÀÇ ¼ø¼­ ¾Æ´Ô
+	// ë°°ì—´ì˜ ìˆœì„œ, ë©”ëª¨ë¦¬ì˜ ìˆœì„œ ì•„ë‹˜
 	return tempBit.whole;
 }
 
@@ -262,15 +262,15 @@ uint32_t processP(uint32_t SBoxResult)
 	return result;
 }
 
-uint32_t SBoxFunction(uint64_t roundedKey, uint32_t half) // roundedKey : ¹è¿­ÀÇ ¼ø¼­
+uint32_t SBoxFunction(uint64_t roundedKey, uint32_t half) // roundedKey : ë°°ì—´ì˜ ìˆœì„œ
 {
 	uint32_t SBoxResult = 0;
 	DES_BIT_HANDLER temp = { 0 };
 	char i;
 
-	temp.whole = bitExtension(half); // ¹è¿­ÀÇ ¼ø¼­, Clear
+	temp.whole = bitExtension(half); // ë°°ì—´ì˜ ìˆœì„œ, Clear
 
-	temp.whole ^= roundedKey; // ¹è¿­ÀÇ ¼ø¼­, Clear
+	temp.whole ^= roundedKey; // ë°°ì—´ì˜ ìˆœì„œ, Clear
 
 	for (i = 0; i < 8; i++)
 	{
@@ -282,7 +282,7 @@ uint32_t SBoxFunction(uint64_t roundedKey, uint32_t half) // roundedKey : ¹è¿­ÀÇ
 
 	SBoxResult = processP(SBoxResult);
 
-	return SBoxResult; // ¸Ş¸ğ¸® ¼ø¼­, Clear
+	return SBoxResult; // ë©”ëª¨ë¦¬ ìˆœì„œ, Clear
 }
 
 DES_STATE_t roundSixteen(DES_STATE_t temp, DES_STATE_t K)
@@ -300,7 +300,7 @@ DES_STATE_t roundSixteen(DES_STATE_t temp, DES_STATE_t K)
 	
 	for (i = 0; i < 16; i++)
 	{
-		// ¶ó¿îµåÅ° »ı¼º
+		// ë¼ìš´ë“œí‚¤ ìƒì„±
 		tempKey.wholeKey = keyCirculer(tempKey.wholeKey, keyRounder[i]); // Clear
 		roundedKey.wholeKey = permutedChoice_2(tempKey.wholeKey); // Clear
 
@@ -386,7 +386,7 @@ void DES_enc(DES_STATE_t * C, DES_STATE_t P, DES_STATE_t K)
 {
 	DES_STATE_t temp;
 
-	temp = InitialPermutation(P); // ¿Ïº®
+	temp = InitialPermutation(P); // ì™„ë²½
 	temp = roundSixteen(temp, K);
 	*C = InitialPermutationInverse(temp);
 }
